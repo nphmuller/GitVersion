@@ -63,6 +63,7 @@ namespace GitVersion
         /// <summary>
         /// <para>b - Formats just the build number</para>
         /// <para>s - Formats the build number and the Git Sha</para>
+        /// <para>ss - Formats the Git short Sha, trimmed at 8 chars</para>
         /// <para>f - Formats the full build metadata</para>
         /// <para>p - Formats the padded build number. Can specify an integer for padding, default is 4. (i.e., p5)</para>
         /// </summary>
@@ -104,6 +105,8 @@ namespace GitVersion
                     return CommitsSinceTag.ToString();
                 case "s":
                     return string.Format("{0}{1}", CommitsSinceTag, string.IsNullOrEmpty(Sha) ? null : ".Sha." + Sha).TrimStart('.');
+                case "ss":
+                    return string.Format("{0}", string.IsNullOrEmpty(Sha) ? null : Sha.Substring(0, 8));
                 case "f":
                     return string.Format(
                         "{0}{1}{2}{3}",
