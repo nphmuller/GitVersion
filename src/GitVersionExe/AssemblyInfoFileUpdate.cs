@@ -15,8 +15,17 @@ namespace GitVersion
         {
             if (!args.UpdateAssemblyInfo) return;
 
+            var assemblyVersion = variables.AssemblySemVer;
+            var assemblyInfoVersion = variables.InformationalVersion;
+            var assemblyFileVersion = variables.MajorMinorPatch + ".0";
+
             if (args.Output != OutputType.Json)
-                Console.WriteLine("Updating assembly info files");
+            { 
+                Console.WriteLine("Updating assembly info files with the following parameters:");
+                Console.WriteLine("AssemblyVersion(\"{0}\")", assemblyVersion);
+                Console.WriteLine("AssemblyInformationalVersion(\"{0}\")", assemblyInfoVersion);
+                Console.WriteLine("AssemblyFileVersion(\"{0}\")", assemblyFileVersion);
+            };
 
             var assemblyInfoFiles = GetAssemblyInfoFiles(workingDirectory, args, fileSystem);
 
@@ -33,9 +42,6 @@ namespace GitVersion
                 });
                 cleanupBackupTasks.Add(() => fileSystem.Delete(backupAssemblyInfo));
 
-                var assemblyVersion = variables.AssemblySemVer;
-                var assemblyInfoVersion = variables.InformationalVersion;
-                var assemblyFileVersion = variables.MajorMinorPatch + ".0";
                 var fileContents = fileSystem.ReadAllText(assemblyInfoFile)
                     .RegexReplace(@"AssemblyVersion\(""[^""]*""\)", string.Format("AssemblyVersion(\"{0}\")", assemblyVersion))
                     .RegexReplace(@"AssemblyInformationalVersion\(""[^""]*""\)", string.Format("AssemblyInformationalVersion(\"{0}\")", assemblyInfoVersion))
