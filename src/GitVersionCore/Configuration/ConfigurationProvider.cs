@@ -37,15 +37,28 @@ namespace GitVersion
 
             var configBranches = config.Branches.ToList();
 
-            ApplyBranchDefaults(config, GetOrCreateBranchDefaults(config, "master"), defaultTag: string.Empty, defaultPreventIncrement: true);
-            ApplyBranchDefaults(config, GetOrCreateBranchDefaults(config, "releases?[/-]"), defaultTag: "beta", defaultPreventIncrement: true);
-            ApplyBranchDefaults(config, GetOrCreateBranchDefaults(config, "features?[/-]"), defaultIncrementStrategy: IncrementStrategy.Inherit);
+            ApplyBranchDefaults(config, GetOrCreateBranchDefaults(config, "master"), 
+                defaultTag: string.Empty, 
+                defaultPreventIncrement: true);
+            ApplyBranchDefaults(config, GetOrCreateBranchDefaults(config, "releases?[/-]"), 
+                defaultTag: "beta", 
+                defaultPreventIncrement: true, 
+                defaultDisableMerge: true);
+            ApplyBranchDefaults(config, GetOrCreateBranchDefaults(config, "features?[/-]"), 
+                defaultIncrementStrategy: IncrementStrategy.Inherit, 
+                defaultDisableMerge: true);
             ApplyBranchDefaults(config, GetOrCreateBranchDefaults(config, @"(pull|pull\-requests|pr)[/-]"),
                 defaultTag: "PullRequest",
                 defaultTagNumberPattern: @"[/-](?<number>\d+)[-/]",
-                defaultIncrementStrategy: IncrementStrategy.Inherit);
-            ApplyBranchDefaults(config, GetOrCreateBranchDefaults(config, "hotfix(es)?[/-]"), defaultTag: "beta");
-            ApplyBranchDefaults(config, GetOrCreateBranchDefaults(config, "support[/-]"), defaultTag: string.Empty, defaultPreventIncrement: true);
+                defaultIncrementStrategy: IncrementStrategy.Inherit,
+                defaultDisableMerge: true);
+            ApplyBranchDefaults(config, GetOrCreateBranchDefaults(config, "hotfix(es)?[/-]"),
+                defaultTag: "beta",
+                defaultDisableMerge: true);
+            ApplyBranchDefaults(config, GetOrCreateBranchDefaults(config, "support[/-]"), 
+                defaultTag: string.Empty, 
+                defaultPreventIncrement: true,
+                defaultDisableMerge: true);
             ApplyBranchDefaults(config, GetOrCreateBranchDefaults(config, "dev(elop)?(ment)?$"), 
                 defaultTag: "unstable",
                 defaultIncrementStrategy: IncrementStrategy.Minor,
@@ -104,6 +117,7 @@ namespace GitVersion
             string defaultTag = "useBranchName",
             IncrementStrategy defaultIncrementStrategy = IncrementStrategy.Patch,
             bool defaultPreventIncrement = false,
+            bool defaultDisableMerge = false,
             VersioningMode? defaultVersioningMode = null, // Looked up from main config
             bool defaultTrackMergeTarget = false,
             string defaultTagNumberPattern = null)
@@ -112,6 +126,7 @@ namespace GitVersion
             branchConfig.TagNumberPattern = branchConfig.TagNumberPattern ?? defaultTagNumberPattern;
             branchConfig.Increment = branchConfig.Increment ?? defaultIncrementStrategy;
             branchConfig.PreventIncrementOfMergedBranchVersion = branchConfig.PreventIncrementOfMergedBranchVersion ?? defaultPreventIncrement;
+            branchConfig.DisableMergeMessageStrategy = branchConfig.DisableMergeMessageStrategy ?? defaultDisableMerge;
             branchConfig.TrackMergeTarget = branchConfig.TrackMergeTarget ?? defaultTrackMergeTarget;
             branchConfig.VersioningMode = branchConfig.VersioningMode ?? defaultVersioningMode ?? config.VersioningMode;
         }

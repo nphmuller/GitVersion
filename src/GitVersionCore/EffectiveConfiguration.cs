@@ -12,6 +12,7 @@
             string tag, string nextVersion, IncrementStrategy increment, 
             string branchPrefixToTrim, 
             bool preventIncrementForMergedBranchVersion, 
+            bool disableMergeMessageStrategy,
             string tagNumberPattern,
             string continuousDeploymentFallbackTag, 
             bool trackMergeTarget,
@@ -32,6 +33,7 @@
             Increment = increment;
             BranchPrefixToTrim = branchPrefixToTrim;
             PreventIncrementForMergedBranchVersion = preventIncrementForMergedBranchVersion;
+            DisableMergeMessageStrategy = disableMergeMessageStrategy;
             TagNumberPattern = tagNumberPattern;
             ContinuousDeploymentFallbackTag = continuousDeploymentFallbackTag;
             TrackMergeTarget = trackMergeTarget;
@@ -65,6 +67,8 @@
         public string BranchPrefixToTrim { get; private set; }
 
         public bool PreventIncrementForMergedBranchVersion { get; private set; }
+
+        public bool DisableMergeMessageStrategy { get; private set; }
 
         public string TagNumberPattern { get; private set; }
 

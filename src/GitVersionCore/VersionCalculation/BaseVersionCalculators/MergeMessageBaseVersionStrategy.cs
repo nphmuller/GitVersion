@@ -14,14 +14,18 @@
             var baseVersions = commitsPriorToThan
                 .SelectMany(c =>
                 {
-                    SemanticVersion semanticVersion;
-                    if (TryParse(c, context.Configuration, out semanticVersion))
+
+                    if (!context.Configuration.DisableMergeMessageStrategy)
                     {
-                        var shouldIncrement = !context.Configuration.PreventIncrementForMergedBranchVersion;
-                        return new[]
+                        SemanticVersion semanticVersion;
+                        if (TryParse(c, context.Configuration, out semanticVersion))
                         {
-                            new BaseVersion(string.Format("Merge message '{0}'", c.Message.Trim()), shouldIncrement, semanticVersion, c, null)
-                        };
+                            var shouldIncrement = !context.Configuration.PreventIncrementForMergedBranchVersion;
+                            return new[]
+                            {
+                                new BaseVersion(string.Format("Merge message '{0}'", c.Message.Trim()), shouldIncrement, semanticVersion, c, null)
+                            };
+                        }
                     }
                     return Enumerable.Empty<BaseVersion>();
                 }).ToList();
