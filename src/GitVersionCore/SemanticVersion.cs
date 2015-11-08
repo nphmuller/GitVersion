@@ -233,7 +233,7 @@ namespace GitVersion
         /// <summary>
         /// <para>s - Default SemVer [1.2.3-beta.4+5]</para>
         /// <para>f - Full SemVer [1.2.3-beta.4+5]</para>
-        /// <para>i - Informational SemVer [1.2.3-beta.4+5.Branch.master.BranchType.Master.Sha.000000]</para>
+        /// <para>i - Informational SemVer [1.2.3-beta4-000000]</para>
         /// <para>j - Just the SemVer part [1.2.3]</para>
         /// <para>t - SemVer with the tag [1.2.3-beta.4]</para>
         /// <para>l - Legacy SemVer tag for systems which do not support SemVer 2.0 properly [1.2.3-beta4]</para>
@@ -278,9 +278,9 @@ namespace GitVersion
                     }
                 case "i":
                     {
-                        var buildMetadata = BuildMetaData.ToString("f");
+                        var buildMetadata = BuildMetaData.ToString("ss");
 
-                        return !string.IsNullOrEmpty(buildMetadata) ? string.Format("{0}+{1}", ToString("s"), buildMetadata) : ToString("s");
+                        return !string.IsNullOrEmpty(buildMetadata) ? string.Format("{0}-{1}", ToString("l"), buildMetadata) : ToString("s");
                     }
                 default:
                     throw new ArgumentException(string.Format("Unrecognised format '{0}'", format), "format");
