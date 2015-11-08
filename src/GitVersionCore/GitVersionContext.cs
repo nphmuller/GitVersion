@@ -87,6 +87,8 @@
                 throw new Exception(string.Format("Configuration value for 'Increment' for branch {0} has no value. (this should not happen, please report an issue)", currentBranchConfig.Key));
             if (!currentBranchConfig.Value.PreventIncrementOfMergedBranchVersion.HasValue)
                 throw new Exception(string.Format("Configuration value for 'PreventIncrementOfMergedBranchVersion' for branch {0} has no value. (this should not happen, please report an issue)", currentBranchConfig.Key));
+            if (!currentBranchConfig.Value.DisableMergeMessageStrategy.HasValue)
+                throw new Exception(string.Format("Configuration value for 'DisableMergeMessageStrategy' for branch {0} has no value. (this should not happen, please report an issue)", currentBranchConfig.Key));
             if (!currentBranchConfig.Value.TrackMergeTarget.HasValue)
                 throw new Exception(string.Format("Configuration value for 'TrackMergeTarget' for branch {0} has no value. (this should not happen, please report an issue)", currentBranchConfig.Key));
             if (!configuration.AssemblyVersioningScheme.HasValue)
@@ -99,6 +101,7 @@
             var tagNumberPattern = currentBranchConfig.Value.TagNumberPattern;
             var incrementStrategy = currentBranchConfig.Value.Increment.Value;
             var preventIncrementForMergedBranchVersion = currentBranchConfig.Value.PreventIncrementOfMergedBranchVersion.Value;
+            var disableMergeMessageStrategy = currentBranchConfig.Value.DisableMergeMessageStrategy.Value;
             var trackMergeTarget = currentBranchConfig.Value.TrackMergeTarget.Value;
             
             var nextVersion = configuration.NextVersion;
@@ -114,7 +117,8 @@
             Configuration = new EffectiveConfiguration(
                 assemblyVersioningScheme, assemblyInformationalFormat, versioningMode, gitTagPrefix, 
                 tag, nextVersion, incrementStrategy, currentBranchConfig.Key, 
-                preventIncrementForMergedBranchVersion, 
+                preventIncrementForMergedBranchVersion,
+                disableMergeMessageStrategy,
                 tagNumberPattern, configuration.ContinuousDeploymentFallbackTag,
                 trackMergeTarget,
                 majorMessage, minorMessage, patchMessage,
